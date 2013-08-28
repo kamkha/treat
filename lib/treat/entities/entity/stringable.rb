@@ -48,7 +48,7 @@ module Treat::Entities::Entity::Stringable
        edges = []
        @edges.each do |edge|
          edges <<
-         "#{edge.target}#{edge.type}"
+         "#{edge.node_a}#{edge.node_b}" # TODO: this used to be target/type, what happened?
        end
        s += "  --- #{short_value.inspect}" +
        "  ---  #{@features.inspect} " +

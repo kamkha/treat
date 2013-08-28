@@ -163,15 +163,11 @@ class Treat::Workers::Processors::Parsers::Enju
   def self.link_heads(entity)
     entity.each_phrase do |phrase|
       if phrase.has?(:head)
-        phrase.link(
-        @@id_table[phrase.head], 
-        'head', true, -1)
+        phrase.link ::Birch::Edge.new(@@id_table[phrase.head], 'head', true, -1)
         phrase.unset(:head)
       end
       if phrase.has?(:sem_head)
-        phrase.link(
-        @@id_table[phrase.sem_head], 
-        'sem_head', true, -1)
+        phrase.link ::Birch::Edge.new(@@id_table[phrase.sem_head], 'sem_head', true, -1)
         phrase.unset(:sem_head)
       end
     end
@@ -189,10 +185,7 @@ class Treat::Workers::Processors::Parsers::Enju
           # Skip this argument if we 
           # don't know the target node.
           next if argument == 'unk'
-          entity.link(
-            @@id_table[argument], 
-            type.intern
-          )
+          entity.link ::Birch::Edge.new(@@id_table[argument], type.intern, true, -1)
         end
       end
     end

@@ -89,7 +89,7 @@ class Treat::Workers::Formatters::Unserializers::XML
         current_element.features = attributes
         edges.each do |edge|
           target, type, directed, direction = *edge
-          current_element.link(target, type, directed, direction)
+          current_element.link ::Birch::Edge.new(target, type, directed, direction)
         end
       else
         current_value = xml_reader.value ?
