@@ -19,6 +19,8 @@ class Treat::Workers::Processors::Parsers::Stanford
   # Parse the entity using the Stanford parser.
   def self.parse(entity, options = {})
 
+    entity.check_hasnt_children
+    entity.tokenize
     val, lang = entity.to_s, entity.language.intern
 
     Treat::Loaders::Stanford.load(lang)
@@ -38,8 +40,7 @@ class Treat::Workers::Processors::Parsers::Stanford
       model = File.join(model_path, model_folder, model_file)
       @@parsers[lang] ||= {}
       options = StanfordCoreNLP::Options.new
-      parser = StanfordCoreNLP::LexicalizedParser
-      .getParserFromFile(model, options)
+      parser = StanfordCoreNLP::LexicalizedParser.getParserFromFile(model, options)
       @@parsers[lang][model_file] = parser
     end
     
