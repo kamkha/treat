@@ -26,6 +26,44 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'schiphol'
   s.add_runtime_dependency 'birch'
   s.add_runtime_dependency 'yomu'
+
+  [
+    'nokogiri',
+    'ferret',
+    'bson_ext',
+    'mongo',
+    'lda-ruby',
+    'stanford-core-nlp',
+    'linguistics',
+    'ruby-readability',
+    'whatlanguage',
+    'chronic',
+    'kronic',
+    'nickel',
+    'decisiontree',
+    'rb-libsvm',
+    'ruby-fann',
+    'zip',
+    'loggability',
+    'tf-idf-similarity',
+    'narray',
+    'fastimage',
+    'fuzzy-string-match',
+    'levenshtein-ffi',
+    'rbtagger',
+    'ruby-stemmer',
+    'punkt-segmenter',
+    'tactful_tokenizer',
+    'nickel',
+    'rwordnet',
+    'uea-stemmer',
+    'engtagger',
+    'activesupport',
+    'srx-english',
+    'scalpel'
+  ].each do |dependency|
+    s.add_runtime_dependency dependency
+  end
   
   # Development dependencies
   s.add_development_dependency 'rspec'

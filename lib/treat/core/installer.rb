@@ -87,7 +87,7 @@ module Treat::Core::Installer
     dependencies = Treat.languages[language].dependencies
     puts "No dependencies to install.\n" if dependencies.empty?
     dependencies.each do |dependency|
-      install_gem(dependency)
+      install_gem(dependency) unless Gem::Specification.find_by_name(dependency)
     end
   end
 
@@ -102,9 +102,9 @@ module Treat::Core::Installer
     dest = File.join(Treat.paths.tmp, 'stanford')
     unzip_stanford(loc, dest)
     
-    model_dir = File.join(Paths[:models], 'stanford')
-    bin_dir = File.join(Paths[:bin], 'stanford')
-    origin = File.join(Paths[:tmp], 'stanford')
+    model_dir = File.join(File.absolute_path(Treat.paths.models), 'stanford')
+    bin_dir = File.join(File.absolute_path(Treat.paths.bin), 'stanford')
+    origin = File.join(File.absolute_path(Treat.paths.tmp), 'stanford')
     
     # Mac hidden files fix.
     mac_remove = File.join(dest, '__MACOSX')
@@ -127,7 +127,7 @@ module Treat::Core::Installer
     Dir.glob(File.join(origin, '*')) do |f|
       next if ['.', '..'].include?(f)
       if f.index('jar')
-        FileUtils.cp(f, File.join(Paths[:bin], 
+        FileUtils.cp(f, File.join(File.absolute_path(Treat.paths.bin), 
         'stanford', File.basename(f)))
       elsif FileTest.directory?(f)
         FileUtils.cp_r(f, model_dir)
@@ -144,7 +144,7 @@ module Treat::Core::Installer
   def self.download_punkt_models(language)
 
     f = "#{language}.yaml"
-    dest = "#{Treat.paths.models}punkt/"
+    dest = "#{Treat.paths.models}/punkt/"
     url = "http://#{Server}/treat/punkt/#{f}"
     loc = Schiphol.download(url, 
       download_folder: Treat.paths.tmp
@@ -155,10 +155,10 @@ module Treat::Core::Installer
     end
 
     puts "- Copying model file to models/punkt ..."
-    FileUtils.cp(loc, File.join(Paths[:models], 'punkt', f))
+    FileUtils.cp(loc, File.join(dest, f))
     
     puts "- Cleaning up..."
-    FileUtils.rm_rf(Paths[:tmp] + Server)
+    FileUtils.rm_rf(File.absolute_path(Treat.paths.tmp) + Server)
 
   end
 
